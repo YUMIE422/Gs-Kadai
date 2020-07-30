@@ -1,0 +1,58 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>検索</title>
+</head>
+
+<body>
+  <fieldset>
+    <legend>検索</legend>
+    <a href="todo_read_staff.php">一覧画面</a>
+    <div>
+      検索ワード：<input type="text" id="search">
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>お名前</th>
+          <th>カウンセリング日</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="resultarea">
+        <!-- ここに<tr><td>deadline</td><td>todo</td><tr>の形でデータが入る -->
+          
+      </tbody>
+    </table>
+  </fieldset>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    $('#search').on('keyup', function () {
+      console.log($(this).val());
+      const serchWord = $(this).val();
+      const requestUrl = 'ajax_get_cus.php';
+      axios.get(`${requestUrl}?serchword=${serchWord}`) // ①リクエスト送信
+      .then(function (response) {
+        console.log(response); // ④受け取り→表示
+        let result = response.data.map(x =>
+        // console.log(x.deadline)
+        `<tr><td>${x.namae}</td><td>${x.date}</td><tr>`
+        );
+        $('#resultarea').html(result);
+    })
+        .catch(function (error) {
+      })
+        .finally(function () {
+  });
+    });
+
+  </script>
+</body>
+</html>
